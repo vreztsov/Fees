@@ -1,41 +1,94 @@
 package ru.netology
 
 fun main() {
-    var sum = 0
+    var sumVKPay = 0
+    var sumMir = 0
+    var sumMasterCard = 0
+    var sumReceived = 0
     val a1 = 10000
-    println(getFee(amount = a1))
-    sum += a1
+    if (send(amount = a1)) {
+        sumVKPay += a1
+        sumReceived += a1
+    }
     val a2 = 4000
-    println(getFee("Мир", sum, a2))
-    sum += a2
+    if (send("Мир", sumMir, sumMir, sumReceived, a2)) {
+        sumMir += a2
+        sumReceived += a2
+    }
     val a3 = 26000
-    println(getFee("Мир", sum, a3))
-    sum += a3
-    val a4 = 50000
-    println(getFee("Mastercard", sum, a4))
-    sum += a4
+    if (send("Мир", sumMir, sumMir, sumReceived, a3)) {
+        sumMir += a3
+        sumReceived += a3
+    }
+    val a4 = 6666
+    if (send("Какая-то система", sumMir, sumMir, sumReceived, a4)) {
+        sumMir += a4
+        sumReceived += a4
+    }
+    val a5 = 50000
+    if (send("Mastercard", sumMasterCard, sumMasterCard, sumReceived, a5)) {
+        sumMasterCard += a5
+        sumReceived += a5
+    }
+    val a6 = 20000
+    if (send("VK Pay", sumVKPay, sumVKPay, sumReceived, a6)) {
+        sumVKPay += a6
+        sumReceived += a6
+    }
 }
 
 fun getFee(type: String = "VK Pay", sumPrevious: Int = 0, amount: Int): Int {
-    val fee: Int
-    when (type) {
-        "VK Pay" -> {
-            fee = 0
-        }
-        "Visa", "Мир" -> {
-            fee = maxOf(35, amount * 75 / 10000)
-        }
+    val fee = when (type) {
+        "VK Pay" -> 0
+        "Visa", "Мир" -> maxOf(35, amount * 75 / 10000)
         "Mastercard", "Maestro" -> {
             val sum = sumPrevious + amount
             val limit = 75000
             if (sum > limit) {
                 val feeBase = minOf(sum - limit, amount)
-                fee = feeBase * 6 / 1000 + 20
+                feeBase * 6 / 1000 + 20
             } else {
-                fee = 0
+                0
             }
         }
-        else -> fee = 0
+        else -> -1
     }
     return fee
 }
+
+fun isNotOutOfLimit(
+    type: String = "VK Pay",
+    sumDailySent: Int = 0,
+    sumDailyReceived: Int = 0,
+    sumMonthlySent: Int = 0,
+    sumMonthlyReceived: Int = 0,
+    amount: Int
+): Boolean {
+    return when (type) {
+        "VK Pay" -> {
+            val limitDaily = 15000
+            val limitMonthly = 40000
+            amount <= limitDaily - (sumDailySent + sumDailyReceived) &&
+                    amount <= limitMonthly - (sumMonthlySent + sumMonthlyReceived)
+        }
+        "Visa", "Mastercard", "Мир", "Maestro" -> {
+            val limitDaily = 150000
+            val limitMonthly = 600000
+            amount <= limitDaily - sumDailySent && amount <= limitMonthly - sumMonthlySent &&
+                    amount <= limitDaily - sumDailyReceived && amount <= limitMonthly - sumMonthlyReceived
+        }
+        else -> false
+    }
+}
+
+fun send(type: String = "VK Pay", sumDaily: Int = 0, sumMonthly: Int = 0, sumReceived: Int = 0, amount: Int): Boolean {
+    return if (isNotOutOfLimit(type, sumDailySent = sumDaily, sumMonthlySent = sumMonthly, amount = amount)) {
+        val fee = getFee(type, sumReceived, amount)
+        println("Перевод на сумму $amount успешно отправлен. Комиссия $fee руб.")
+        true
+    } else {
+        println("Перевод на сумму $amount не отправлен.")
+        false
+    }
+}
+
