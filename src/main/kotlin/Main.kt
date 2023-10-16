@@ -1,13 +1,15 @@
 package ru.netology
 
 fun main() {
-    var sumVKPay = 0
+    var sumVKPayDaily = 0
+    var sumVKPayMonthly = 0
     var sumMir = 0
     var sumMasterCard = 0
     var sumReceived = 0
     val a1 = 10000
     if (send(amount = a1)) {
-        sumVKPay += a1
+        sumVKPayDaily += a1
+        sumVKPayMonthly += a1
         sumReceived += a1
     }
     val a2 = 4000
@@ -30,9 +32,16 @@ fun main() {
         sumMasterCard += a5
         sumReceived += a5
     }
-    val a6 = 20000
-    if (send("VK Pay", sumVKPay, sumVKPay, sumReceived, a6)) {
-        sumVKPay += a6
+    val a6 = 14000
+    if (send("VK Pay", sumVKPayDaily, sumVKPayMonthly, sumReceived, a6)) {
+        sumVKPayDaily += a6
+        sumVKPayMonthly += a6
+        sumReceived += a6
+    }
+    sumVKPayDaily = 0
+    if (send("VK Pay", sumVKPayDaily, sumVKPayMonthly, sumReceived, a6)) {
+        sumVKPayDaily += a6
+        sumVKPayMonthly += a6
         sumReceived += a6
     }
 }
@@ -68,8 +77,8 @@ fun isNotOutOfLimit(
         "VK Pay" -> {
             val limitDaily = 15000
             val limitMonthly = 40000
-            amount <= limitDaily - (sumDailySent + sumDailyReceived) &&
-                    amount <= limitMonthly - (sumMonthlySent + sumMonthlyReceived)
+            amount <= limitDaily - sumDailySent &&
+                    amount <= limitMonthly - sumMonthlySent
         }
         "Visa", "Mastercard", "Мир", "Maestro" -> {
             val limitDaily = 150000
