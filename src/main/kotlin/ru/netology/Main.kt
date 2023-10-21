@@ -1,48 +1,54 @@
 package ru.netology
 
-fun main() {
+fun main(){
+    subMain()
+}
+
+fun subMain(a1: Int = 10000, a2: Int = 4000, a3: Int = 26000,
+         a4: Int = 6666, a5: Int = 50000, a6: Int = 14000,
+            a7: Int = 14000, type: String = "Какая-то система") {
     var sumVKPayDaily = 0
     var sumVKPayMonthly = 0
     var sumMir = 0
     var sumMasterCard = 0
     var sumReceived = 0
-    val a1 = 10000
+//    val a1 = 10000
     if (send(amount = a1)) {
         sumVKPayDaily += a1
         sumVKPayMonthly += a1
         sumReceived += a1
     }
-    val a2 = 4000
+//    val a2 = 4000
     if (send("Мир", sumMir, sumMir, sumReceived, a2)) {
         sumMir += a2
         sumReceived += a2
     }
-    val a3 = 26000
+//    val a3 = 26000
     if (send("Мир", sumMir, sumMir, sumReceived, a3)) {
         sumMir += a3
         sumReceived += a3
     }
-    val a4 = 6666
-    if (send("Какая-то система", sumMir, sumMir, sumReceived, a4)) {
+//    val a4 = 6666
+    if (send(type, sumMir, sumMir, sumReceived, a4)) {
         sumMir += a4
         sumReceived += a4
     }
-    val a5 = 50000
+//    val a5 = 50000
     if (send("Mastercard", sumMasterCard, sumMasterCard, sumReceived, a5)) {
         sumMasterCard += a5
         sumReceived += a5
     }
-    val a6 = 14000
+//    val a6 = 14000
     if (send("VK Pay", sumVKPayDaily, sumVKPayMonthly, sumReceived, a6)) {
         sumVKPayDaily += a6
         sumVKPayMonthly += a6
         sumReceived += a6
     }
     sumVKPayDaily = 0
-    if (send("VK Pay", sumVKPayDaily, sumVKPayMonthly, sumReceived, a6)) {
-        sumVKPayDaily += a6
-        sumVKPayMonthly += a6
-        sumReceived += a6
+    if (send("VK Pay", sumVKPayDaily, sumVKPayMonthly, sumReceived, a7)) {
+        sumVKPayDaily += a7
+        sumVKPayMonthly += a7
+        sumReceived += a7
     }
 }
 
