@@ -75,7 +75,6 @@ class MainKtTest {
         assertFalse(isNotOutOfLimit(amount = a2))
         assertFalse(isNotOutOfLimit(sumDailySent = l1, amount = a1))
         assertFalse(isNotOutOfLimit(sumMonthlySent = l2, amount = a1))
-        assertTrue(isNotOutOfLimit(sumMonthlySent = l2, amount = a1))
     }
 
     @Test
